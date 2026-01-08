@@ -261,7 +261,45 @@ function getRoleForLevel(lvl) {
   return pick;
 }
 
-client.on("messageCreate", async (message) => {
+client.on("messageCreate", async (message) => {// ===== MANUAL LEVEL UP COMMAND =====
+if (message.content.startsWith("!addlevel")) {
+  if (!message.member.permissions.has("Administrator")) {
+    return message.reply("❌ Alleen admins mogen dit gebruiken.");
+  }
+
+  const target = message.mentions.members.first();
+  if (!target) {
+    return message.reply("⚠️ Gebruik: `!addlevel @user`");
+  }
+
+  const data = loadLevels();
+  const id = target.id;
+
+  if (!data[id]) data[id] = { xp: 0, level: 1 };
+
+  data[id].level += 1;
+  data[id].xp = 0;
+
+  // oude level-rollen weg
+  for (const lr of levelRoles) {
+    const roleObj = message.guild.roles.cache.find(r => r.name === lr.role);
+    if (roleObj && target.roles.cache.has(roleObj.id)) {
+      await target.roles.remove(roleObj).catch(() => {});
+    }
+  }
+
+  // nieuwe rol
+  const newRoleData = getRoleForLevel(data[id].level);
+  if (newRoleData) {
+    const newRole = message.guild.roles.cache.find(r => r.name === newRoleData.role);
+    if (newRole) await target.roles.add(newRole).catch(() => {});
+  }
+
+  saveLevels(data);
+
+  return message.channel.send(`🔥 **${target.user.username}** is handmatig naar **LEVEL ${data[id].level}** gezet!`);
+}
+
   if (message.author.bot) return;
   if (!message.guild) return;
 
@@ -272,7 +310,7 @@ client.on("messageCreate", async (message) => {
     const need = user.level * 100;
 
     return message.reply(`💀 Level **${user.level}** • XP **${user.xp}/${need}**`);
-  }
+  });
 
   // XP cooldown
   const now = Date.now();
