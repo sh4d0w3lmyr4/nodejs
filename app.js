@@ -47,7 +47,7 @@ client.on("guildMemberAdd", async (member) => {
       `**HAK HARD. LUISTER HARDER.**`
     )
     .setImage(
-      "https://cdn.discordapp.com/attachments/1101254205492179015/1458905150746787965/Hardground_welcome_banner_500x350_1.png"
+      "https://media.discordapp.net/attachments/1101254205492179015/1458911580640252016/ChatGPT_Image_8_jan_2026_20_53_34.png?ex=69615cca&is=69600b4a&hm=9fd33c1bbb6a3b9396945a69421bcd3f18409907514f2c69ace9bc37b3884f80&=&format=webp&quality=lossless&width=1376&height=917"
     )
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
     .setFooter({ text: "Hardground • BETON • BASS • TEMPO" })
