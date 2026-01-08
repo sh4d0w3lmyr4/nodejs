@@ -203,6 +203,123 @@ client.on("messageReactionRemove", async (reaction, user) => {
     console.log("ReactionRemove error:", err);
   }
 });
+// ===== LEVEL SYSTEM (Hardground) =====
+import fs from "fs";
+
+const LEVELS_FILE = "./levels.json";
+
+// anti-spam: max 1x XP per 30 sec per persoon
+const xpCooldown = new Map();
+
+function loadLevels() {
+  try {
+    if (!fs.existsSync(LEVELS_FILE)) fs.writeFileSync(LEVELS_FILE, "{}");
+    return JSON.parse(fs.readFileSync(LEVELS_FILE, "utf8") || "{}");
+  } catch (e) {
+    console.log("levels.json error:", e);
+    return {};
+  }
+}
+
+function saveLevels(data) {
+  fs.writeFileSync(LEVELS_FILE, JSON.stringify(data, null, 2));
+}
+
+// JOUW ROLNAMEN (zoals in Discord) + levels
+const levelRoles = [
+  { level: 1, role: "New Blood" },
+  { level: 2, role: "Concrete Kid" },
+  { level: 3, role: "Underground" },
+  { level: 4, role: "Beat Seeker" },
+  { level: 5, role: "Listener" },
+  { level: 7, role: "Basshead" },
+  { level: 9, role: "Tempo Hunter" },
+  { level: 10, role: "Raver" },
+  { level: 12, role: "Party Starter" },
+  { level: 15, role: "Hardcore Minded" },
+  { level: 18, role: "Kickdrum Warrior" },
+  { level: 20, role: "Industrial Soul" },
+  { level: 22, role: "Concrete Soldier" },
+  { level: 25, role: "Hardcore Crew" },
+  { level: 30, role: "Gabber" },
+  { level: 35, role: "Riot Mode" },
+  { level: 40, role: "No Mercy" },
+  { level: 45, role: "Danger Zone" },
+  { level: 50, role: "Beton Beuker" },
+  { level: 60, role: "Underground Legend" },
+  { level: 70, role: "Hardground Veteran" },
+  { level: 80, role: "Tempo Machine" },
+  { level: 90, role: "Boss of Bass" },
+  { level: 100, role: "Hardground Elite" }
+];
+
+function getRoleForLevel(lvl) {
+  // hoogste role waarvan level <= lvl
+  const sorted = [...levelRoles].sort((a, b) => a.level - b.level);
+  let pick = null;
+  for (const r of sorted) if (lvl >= r.level) pick = r;
+  return pick;
+}
+
+client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;
+  if (!message.guild) return;
+
+  // !level command
+  if (message.content.trim() === "!level") {
+    const data = loadLevels();
+    const user = data[message.author.id] || { xp: 0, level: 1 };
+    const need = user.level * 100;
+
+    return message.reply(`💀 Level **${user.level}** • XP **${user.xp}/${need}**`);
+  }
+
+  // XP cooldown
+  const now = Date.now();
+  const last = xpCooldown.get(message.author.id) || 0;
+  if (now - last < 30_000) return; // 30s
+  xpCooldown.set(message.author.id, now);
+
+  // XP + level
+  const data = loadLevels();
+  const id = message.author.id;
+
+  if (!data[id]) data[id] = { xp: 0, level: 1 };
+
+  const gain = Math.floor(Math.random() * 11) + 5; // 5-15
+  data[id].xp += gain;
+
+  const need = data[id].level * 100;
+
+  if (data[id].xp >= need) {
+    data[id].level += 1;
+    data[id].xp = 0;
+
+    // 1 level-rol tegelijk: oude weg, nieuwe erbij
+    const member = await message.guild.members.fetch(id);
+
+    // haal alle level-rollen weg
+    for (const lr of levelRoles) {
+      const roleObj = message.guild.roles.cache.find(r => r.name === lr.role);
+      if (roleObj && member.roles.cache.has(roleObj.id)) {
+        await member.roles.remove(roleObj).catch(() => {});
+      }
+    }
+
+    // geef nieuwe passende rol
+    const newRoleData = getRoleForLevel(data[id].level);
+    if (newRoleData) {
+      const newRole = message.guild.roles.cache.find(r => r.name === newRoleData.role);
+      if (newRole) {
+        await member.roles.add(newRole).catch(() => {});
+      }
+    }
+
+    await message.channel.send(`🔥 **${message.author.username}** is nu **LEVEL ${data[id].level}**!`);
+  }
+
+  saveLevels(data);
+});
 
 client.login(process.env.TOKEN);
 
