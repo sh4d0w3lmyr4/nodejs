@@ -1,8 +1,9 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, GatewayIntentBits, EmbedBuilder } from "discord.js";
 
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent
   ],
@@ -12,23 +13,25 @@ client.once("ready", () => {
   console.log("Hardground BOT ONLINE 💀");
 });
 
-client.on("messageCreate", (message) => {
+// Test commands
+client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
   if (message.content === "!ping") {
-    message.reply("PONG 🔊 HARDGROUND LIVE");
+    return message.reply("PONG 🔊 HARDGROUND LIVE");
+  }
+
+  if (message.content === "!status") {
+    return message.reply("Ik leef 💀");
   }
 });
 
-client.login(process.env.TOKEN);
-
-import { EmbedBuilder } from "discord.js";
-
+// Welcome message bij join
 client.on("guildMemberAdd", async (member) => {
+  const channelName = "welkom"; // <-- jouw kanaal
   const channel = member.guild.channels.cache.find(
-    ch => ch.name === "welcome"
+    (ch) => ch.name === channelName
   );
-
   if (!channel) return;
 
   const welcomeEmbed = new EmbedBuilder()
@@ -43,10 +46,14 @@ client.on("guildMemberAdd", async (member) => {
       `⚡ Drop je eerste banger in **#track-drops**\n\n` +
       `**HAK HARD. LUISTER HARDER.**`
     )
-    .setImage(https://cdn.discordapp.com/attachments/1101254205492179015/1458905150746787965/Hardground_welcome_banner_500x350_1.png?ex=696156cd&is=6960054d&hm=fe8ec55d7ec8c2bdbe5885731de800477d0384a2965f18b249b8812c89b57da1&)
+    .setImage(
+      "https://cdn.discordapp.com/attachments/1101254205492179015/1458905150746787965/Hardground_welcome_banner_500x350_1.png"
+    )
     .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
-    .setFooter({ text: "Hardground • Underground Hardcore" })
+    .setFooter({ text: "Hardground • BETON • BASS • TEMPO" })
     .setTimestamp();
 
-  channel.send({ embeds: [welcomeEmbed] });
+  await channel.send({ embeds: [welcomeEmbed] });
 });
+
+client.login(process.env.TOKEN);
