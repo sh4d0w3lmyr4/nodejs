@@ -205,3 +205,23 @@ client.on("messageReactionRemove", async (reaction, user) => {
 });
 
 client.login(process.env.TOKEN);
+
+// ===== REGELS FOTO =====
+client.on("messageCreate", async (message) => {
+  if (message.author.bot) return;
+
+  if (message.content === "!regels") {
+    const channel = message.guild.channels.cache.find(
+      (ch) => ch.name === "regels"
+    );
+    if (!channel) return message.reply("❌ Kanaal #regels niet gevonden.");
+
+    const embed = new EmbedBuilder()
+      .setColor(0xff0000)
+      .setImage("https://media.discordapp.net/attachments/1101254205492179015/1458922559314591925/ChatGPT_Image_8_jan_2026_21_09_03.png?ex=69616703&is=69601583&hm=678467d3aed4684aa2ee012e488c5cb334da572c505f89c1326fdaf705f51fb7&=&format=webp&quality=lossless&width=233&height=350")
+      .setFooter({ text: "Hardground • Respect = alles" });
+
+    await channel.send({ embeds: [embed] });
+    return message.reply("✅ Regels geplaatst.");
+  }
+});
