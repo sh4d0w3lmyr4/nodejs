@@ -65,14 +65,35 @@ client.on("messageCreate", async (message) => {
     const embed = new EmbedBuilder()
       .setColor(0xff0000)
       .setTitle("💀 KIES JE EIGEN ROL 💀")
-      .setDescription(
-        "Klik op een emoji om je rol te kiezen:\n\n" +
-          "🔵 Millennium\n" +
-          "🟡 Uptempo\n" +
-          "🔴 Oldschool Gabber\n" +
-          "🟣 Industrial\n" +
-          "🎧 Producer"
-      )
+.setDescription(
+  "**🎭 KIES JE EIGEN ROL – HARDGROUND**\n\n" +
+
+  "**🧱 BASIS**\n" +
+  "🔵 Millennium\n" +
+  "🟡 Uptempo\n" +
+  "🔴 Oldschool Gabber\n" +
+  "🟣 Industrial\n" +
+  "🎧 Producer\n\n" +
+
+  "**🔥 HARDCORE**\n" +
+  "💀 Hardcore\n" +
+  "🟢 Early Hardcore\n" +
+  "🔷 Millennium Hardcore\n" +
+  "🖤 Darkcore\n" +
+  "🔥 Terror\n" +
+  "💥 Speedcore\n" +
+  "🪓 Doomcore\n\n" +
+
+  "**⚡ HARDSTYLE**\n" +
+  "⚡ Hardstyle\n" +
+  "🧬 Rawstyle\n" +
+  "🎵 Euphoric Hardstyle\n\n" +
+
+  "**💣 OVERIG**\n" +
+  "💣 Frenchcore\n" +
+  "⚙️ Hardcore Techno"
+)
+
       .setFooter({ text: "Hardground • BETON • BASS • TEMPO" });
 
     const sent = await channel.send({ embeds: [embed] });
