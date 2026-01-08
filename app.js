@@ -315,7 +315,23 @@ client.on("messageCreate", async (message) => {
       }
     }
 
-    await message.channel.send(`🔥 **${message.author.username}** is nu **LEVEL ${data[id].level}**!`);
+   const lvl = data[id].level;
+
+const embed = new EmbedBuilder()
+  .setTitle("💀 LEVEL UP 💀")
+  .setDescription(`🔥 **${message.author.username}** is nu **LEVEL ${lvl}**!`)
+  .setFooter({ text: "Hardground • BETON • BASS • TEMPO" })
+  .setTimestamp();
+
+// (optioneel) als je een level-rol hebt gekregen, toon die
+const got = getRoleForLevel(lvl);
+if (got?.role) embed.addFields({ name: "🎖️ Nieuwe Rank", value: got.role, inline: true });
+
+// (optioneel) banner in je embed (plak jouw regels/welcome banner link hier)
+embed.setImage("PLAK_HIER_JE_BANNER_LINK");
+
+await message.channel.send({ embeds: [embed] });
+);
   }
 
   saveLevels(data);
