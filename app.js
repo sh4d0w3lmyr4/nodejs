@@ -314,7 +314,7 @@ const embed = new EmbedBuilder()
   .setTimestamp();
 
 // (optioneel) als je een level-rol hebt gekregen, toon die
-const got = getRoleForLevel(lvl);
+const got = getRoleForLevel(lvl):
 if (got?.role) embed.addFields({ name: "🎖️ Nieuwe Rank", value: got.role, inline: true });
 
 // (optioneel) banner in je embed (plak jouw regels/welcome banner link hier)
