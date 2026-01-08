@@ -26,11 +26,30 @@ const WELCOME_BANNER_URL =
 
 // Reaction roles mapping
 const roleMap = {
+  // OUDE
   "🔵": "Millennium",
   "🟡": "Uptempo",
   "🔴": "Oldschool Gabber",
   "🟣": "Industrial",
-  "🎧": "Producer"
+  "🎧": "Producer",
+
+  // HARDCORE
+  "💀": "Hardcore",
+  "🟢": "Early Hardcore",
+  "🔷": "Millennium Hardcore",
+  "🖤": "Darkcore",
+  "🔥": "Terror",
+  "💥": "Speedcore",
+  "🪓": "Doomcore",
+
+  // HARDSTYLE
+  "⚡": "Hardstyle",
+  "🧬": "Rawstyle",
+  "🎵": "Euphoric Hardstyle",
+
+  // OVERIG
+  "💣": "Frenchcore",
+  "⚙️": "Hardcore Techno"
 };
 
 // ===== READY =====
