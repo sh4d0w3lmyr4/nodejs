@@ -328,7 +328,7 @@ const got = getRoleForLevel(lvl);
 if (got?.role) embed.addFields({ name: "🎖️ Nieuwe Rank", value: got.role, inline: true });
 
 // (optioneel) banner in je embed (plak jouw regels/welcome banner link hier)
-embed.setImage("PLAK_HIER_JE_BANNER_LINK");
+embed.setImage("https://media.discordapp.net/attachments/1101254205492179015/1458961598373695589/ChatGPT_Image_9_jan_2026_00_11_59.png?ex=69618b5f&is=696039df&hm=db2d4489ae5a660c9dae2fb51278498f60de13567e8a092d729cb0d5618ba01f&=&format=webp&quality=lossless&width=525&height=350");
 
 await message.channel.send({ embeds: [embed] });
 );
