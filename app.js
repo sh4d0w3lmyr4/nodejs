@@ -261,7 +261,8 @@ function getRoleForLevel(lvl) {
   return pick;
 }
 
-client.on("messageCreate", async (message) => {// ===== MANUAL LEVEL UP COMMAND =====
+client.on("messageCreate", async (message) => {
+  // ===== MANUAL LEVEL UP COMMAND =====
 if (message.content.startsWith("!addlevel")) {
   if (!message.member.permissions.has("Administrator")) {
     return message.reply("❌ Alleen admins mogen dit gebruiken.");
