@@ -216,7 +216,7 @@ client.on("messageCreate", async (message) => {
     );
     if (!channel) return message.reply("❌ Kanaal #regels niet gevonden.");
 
-await channel.send("https://media.discordapp.net/attachments/1101254205492179015/1458922559314591925/ChatGPT_Image_8_jan_2026_21_09_03.png?ex=69616703&is=69601583&hm=678467d3aed4684aa2ee012e488c5cb334da572c505f89c1326fdaf705f51fb7&=&format=webp&quality=lossless&width=640&height=960");
+await channel.send("https://media.discordapp.net/attachments/1101254205492179015/1458931424001265796/ChatGPT_Image_8_jan_2026_22_12_29.png?ex=69616f45&is=69601dc5&hm=6da91a28270a7035a7068f8f9376c5028a7490bf6eb9d1ea3da4ed34138ccbba&=&format=webp&quality=lossless&width=640&height=960");
 
 
     await channel.send({ embeds: [embed] });
