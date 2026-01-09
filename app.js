@@ -225,32 +225,36 @@ function saveLevels(data) {
   fs.writeFileSync(LEVELS_FILE, JSON.stringify(data, null, 2));
 }
 
-// JOUW ROLNAMEN (zoals in Discord) + levels
+// ===== LEVEL ROLLEN (1 tegelijk) =====
 const levelRoles = [
-  { level: 1, role: "New Blood" },
-  { level: 2, role: "Concrete Kid" },
-  { level: 3, role: "Underground" },
-  { level: 4, role: "Beat Seeker" },
-  { level: 5, role: "Listener" },
-  { level: 7, role: "Basshead" },
-  { level: 9, role: "Tempo Hunter" },
-  { level: 10, role: "Raver" },
-  { level: 12, role: "Party Starter" },
-  { level: 15, role: "Hardcore Minded" },
-  { level: 18, role: "Kickdrum Warrior" },
-  { level: 20, role: "Industrial Soul" },
-  { level: 22, role: "Concrete Soldier" },
-  { level: 25, role: "Hardcore Crew" },
-  { level: 30, role: "Gabber" },
-  { level: 35, role: "Riot Mode" },
-  { level: 40, role: "No Mercy" },
-  { level: 45, role: "Danger Zone" },
-  { level: 50, role: "Beton Beuker" },
-  { level: 60, role: "Underground Legend" },
-  { level: 70, role: "Hardground Veteran" },
-  { level: 80, role: "Tempo Machine" },
-  { level: 90, role: "Boss of Bass" },
-  { level: 100, role: "Hardground Elite" }
+  { level: 1, role: "🔰 New Blood" },
+  { level: 2, role: "🧱 Concrete Kid" },
+  { level: 3, role: "🥾 Underground" },
+  { level: 4, role: "🎛️ Beat Seeker" },
+  { level: 5, role: "🎧 Listener" },
+
+  { level: 7, role: "🔊 Basshead" },
+  { level: 9, role: "⚡ Tempo Hunter" },
+  { level: 10, role: "🕺 Raver" },
+  { level: 12, role: "🧨 Party Starter" },
+  { level: 15, role: "💣 Hardcore Minded" },
+
+  { level: 18, role: "🪓 Kickdrum Warrior" },
+  { level: 20, role: "🧠 Industrial Soul" },
+  { level: 22, role: "🧱 Concrete Soldier" },
+  { level: 25, role: "💀 Hardcore Crew" },
+  { level: 30, role: "🪓 Gabber" },
+
+  { level: 35, role: "🔥 Riot Mode" },
+  { level: 40, role: "🩸 No Mercy" },
+  { level: 45, role: "⚠️ Danger Zone" },
+  { level: 50, role: "👊 Beton Beuker" },
+
+  { level: 60, role: "☣️ Underground Legend" },
+  { level: 70, role: "🧿 Hardground Veteran" },
+  { level: 80, role: "🧬 Tempo Machine" },
+  { level: 90, role: "👑 Boss of Bass" },
+  { level: 100, role: "🏆 Hardground Elite" }
 ];
 
 function getRoleForLevel(lvl) {
