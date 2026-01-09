@@ -22,7 +22,7 @@ const ROLES_CHANNEL_NAME = "rollen";
 
 // Welcome banner link (Discord CDN link)
 const WELCOME_BANNER_URL =
-  "https://cdn.discordapp.com/attachments/1101254205492179015/1458905150746787965/Hardground_welcome_banner_500x350_1.png";
+  "https://media.discordapp.net/attachments/1101254205492179015/1458911580640252016/ChatGPT_Image_8_jan_2026_20_53_34.png?ex=69615cca&is=69600b4a&hm=9fd33c1bbb6a3b9396945a69421bcd3f18409907514f2c69ace9bc37b3884f80&=&format=webp&quality=lossless&width=1376&height=917";
 
 // Reaction roles mapping
 const roleMap = {
@@ -261,45 +261,7 @@ function getRoleForLevel(lvl) {
   return pick;
 }
 
-client.on("messageCreate", async (message) => {// ===== MANUAL LEVEL UP COMMAND =====
-if (message.content.startsWith("!addlevel")) {
-  if (!message.member.permissions.has("Administrator")) {
-    return message.reply("❌ Alleen admins mogen dit gebruiken.");
-  }
-
-  const target = message.mentions.members.first();
-  if (!target) {
-    return message.reply("⚠️ Gebruik: `!addlevel @user`");
-  }
-
-  const data = loadLevels();
-  const id = target.id;
-
-  if (!data[id]) data[id] = { xp: 0, level: 1 };
-
-  data[id].level += 1;
-  data[id].xp = 0;
-
-  // oude level-rollen weg
-  for (const lr of levelRoles) {
-    const roleObj = message.guild.roles.cache.find(r => r.name === lr.role);
-    if (roleObj && target.roles.cache.has(roleObj.id)) {
-      await target.roles.remove(roleObj).catch(() => {});
-    }
-  }
-
-  // nieuwe rol
-  const newRoleData = getRoleForLevel(data[id].level);
-  if (newRoleData) {
-    const newRole = message.guild.roles.cache.find(r => r.name === newRoleData.role);
-    if (newRole) await target.roles.add(newRole).catch(() => {});
-  }
-
-  saveLevels(data);
-
-  return message.channel.send(`🔥 **${target.user.username}** is handmatig naar **LEVEL ${data[id].level}** gezet!`);
-}
-
+client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
 
@@ -310,7 +272,7 @@ if (message.content.startsWith("!addlevel")) {
     const need = user.level * 100;
 
     return message.reply(`💀 Level **${user.level}** • XP **${user.xp}/${need}**`);
-  });
+  }
 
   // XP cooldown
   const now = Date.now();
@@ -353,23 +315,7 @@ if (message.content.startsWith("!addlevel")) {
       }
     }
 
-   const lvl = data[id].level;
-
-const embed = new EmbedBuilder()
-  .setTitle("💀 LEVEL UP 💀")
-  .setDescription(`🔥 **${message.author.username}** is nu **LEVEL ${lvl}**!`)
-  .setFooter({ text: "Hardground • BETON • BASS • TEMPO" })
-  .setTimestamp();
-
-// (optioneel) als je een level-rol hebt gekregen, toon die
-const got = getRoleForLevel(lvl);
-if (got?.role) embed.addFields({ name: "🎖️ Nieuwe Rank", value: got.role, inline: true });
-
-// (optioneel) banner in je embed (plak jouw regels/welcome banner link hier)
-embed.setImage("https://media.discordapp.net/attachments/1101254205492179015/1458961598373695589/ChatGPT_Image_9_jan_2026_00_11_59.png?ex=69618b5f&is=696039df&hm=db2d4489ae5a660c9dae2fb51278498f60de13567e8a092d729cb0d5618ba01f&=&format=webp&quality=lossless&width=525&height=350");
-
-await message.channel.send({ embeds: [embed] });
-);
+    await message.channel.send(`🔥 **${message.author.username}** is nu **LEVEL ${data[id].level}**!`);
   }
 
   saveLevels(data);
