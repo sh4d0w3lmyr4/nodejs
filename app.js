@@ -335,6 +335,7 @@ saveLevels(data);
   }
 });
 
+client.login(TOKEN);
 
   // !level command
   if (message.content.trim() === "!level") {
