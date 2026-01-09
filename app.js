@@ -273,6 +273,31 @@ client.on("messageCreate", async (message) => {
 
     return message.reply(`💀 Level **${user.level}** • XP **${user.xp}/${need}**`);
   }
+// !addlevel command (ADMIN ONLY)
+if (message.content.startsWith("!addlevel")) {
+  if (!message.member.permissions.has("Administrator")) {
+    return message.reply("❌ Alleen admins mogen dit gebruiken.");
+  }
+
+  const target = message.mentions.users.first();
+  if (!target) {
+    return message.reply("⚠️ Gebruik: `!addlevel @user`");
+  }
+
+  const data = loadLevels();
+  const id = target.id;
+
+  if (!data[id]) data[id] = { xp: 0, level: 1 };
+
+  data[id].level += 1;
+  data[id].xp = 0;
+
+  saveLevels(data);
+
+  return message.channel.send(
+    `🔥 ${target.username} is nu **LEVEL ${data[id].level}**!`
+  );
+}
 
   // XP cooldown
   const now = Date.now();
