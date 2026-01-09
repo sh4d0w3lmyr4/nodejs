@@ -331,8 +331,10 @@ client.on("messageCreate", async (message) => {
     });
   }
 
-  saveLevels(data);
+saveLevels(data);
+  }
 });
+
 
   // !level command
   if (message.content.trim() === "!level") {
