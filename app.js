@@ -264,50 +264,6 @@ function getRoleForLevel(lvl) {
   for (const r of sorted) if (lvl >= r.level) pick = r;
   return pick;
 }
-// ===== LEVEL ROLE MAP (pas aan naar jouw rollen) =====
-const levelRoles = {
-  1: "New Blood",
-  5: "Raver",
-  10: "Hardcore Minded",
-  20: "Kickdrum Warrior",
-  30: "Concrete Soldier",
-  40: "Hardcore Crew",
-  50: "Hardground Elite"
-};
-
-// ===== FUNCTIE: oude level-rollen weg + nieuwe geven =====
-async function applyLevelRole(member, level) {
-  if (!member) return null;
-
-  // alle level-rollen opzoeken
-  const roles = Object.values(levelRoles)
-    .map(name => member.guild.roles.cache.find(r => r.name === name))
-    .filter(Boolean);
-
-  // oude level-rollen weghalen
-  if (roles.length) {
-    await member.roles.remove(roles).catch(() => {});
-  }
-
-  // juiste rol kiezen (hoogste level <= jouw level)
-  const levels = Object.keys(levelRoles).map(n => Number(n)).sort((a, b) => b - a);
-  let chosenName = null;
-
-  for (const lvl of levels) {
-    if (level >= lvl) {
-      chosenName = levelRoles[lvl];
-      break;
-    }
-  }
-
-  if (!chosenName) return null;
-
-  const role = member.guild.roles.cache.find(r => r.name === chosenName);
-  if (!role) return null;
-
-  await member.roles.add(role).catch(() => {});
-  return role.name;
-}
 
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
