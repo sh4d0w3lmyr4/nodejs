@@ -267,8 +267,7 @@ client.on("messageCreate", async (message) => {
 
   const content = message.content.trim();
 
-  // ===== COMMANDS EERST =====
-
+  // ===== !LEVEL =====
   if (content === "!level") {
     const data = loadLevels();
     const user = data[message.author.id] || { xp: 0, level: 1 };
@@ -276,13 +275,16 @@ client.on("messageCreate", async (message) => {
     return message.reply(`💀 Level **${user.level}** • XP **${user.xp}/${need}**`);
   }
 
+  // ===== !ADDLEVEL =====
   if (content.startsWith("!addlevel")) {
     if (!message.member.permissions.has("Administrator")) {
       return message.reply("❌ Alleen admins mogen dit gebruiken.");
     }
 
     const target = message.mentions.members.first();
-    if (!target) return message.reply("⚠️ Gebruik: `!addlevel @user`");
+    if (!target) {
+      return message.reply("⚠️ Gebruik: `!addlevel @user`");
+    }
 
     const data = loadLevels();
     const id = target.id;
@@ -300,15 +302,38 @@ client.on("messageCreate", async (message) => {
     });
   }
 
-  // ===== PAS HIERNA XP / COOLDOWN =====
-
+  // ===== XP SYSTEM (NA COMMANDS) =====
   const now = Date.now();
   const last = xpCooldown.get(message.author.id) || 0;
   if (now - last < 30_000) return;
   xpCooldown.set(message.author.id, now);
 
-  // XP + leveling hieronder
+  const data = loadLevels();
+  const id = message.author.id;
+
+  if (!data[id]) data[id] = { xp: 0, level: 1 };
+
+  const gain = Math.floor(Math.random() * 11) + 5;
+  data[id].xp += gain;
+
+  const need = data[id].level * 100;
+
+  if (data[id].xp >= need) {
+    data[id].level += 1;
+    data[id].xp = 0;
+    saveLevels(data);
+
+    const member = await message.guild.members.fetch(id);
+    const rank = await applyLevelRole(member, data[id].level);
+
+    return message.channel.send({
+      embeds: [buildLevelUpEmbed(message.author.username, data[id].level, rank)]
+    });
+  }
+
+  saveLevels(data);
 });
+
 
   // !level command
   if (message.content.trim() === "!level") {
