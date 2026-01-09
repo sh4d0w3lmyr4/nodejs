@@ -261,31 +261,7 @@ function getRoleForLevel(lvl) {
   return pick;
 }
 
-client.on("messageCreate", async (message) => {// ---- admin: addlevel @user (level +1)
-if (content.startsWith("!addlevel")) {
-  if (!message.member.permissions.has("Administrator")) {
-    return message.reply("❌ Alleen admins mogen dit gebruiken.");
-  }
-
-  const target = message.mentions.members.first();
-  if (!target) return message.reply("⚠️ Gebruik: `!addlevel @user`");
-
-  const data = loadLevels();
-  const id = target.id;
-
-  if (!data[id]) data[id] = { xp: 0, level: 1 };
-
-  data[id].level += 1;
-  data[id].xp = 0;
-  saveLevels(data);
-
-  const rank = await applyLevelRole(target, data[id].level);
-
-  return message.channel.send({
-    embeds: [buildLevelUpEmbed(target.user.username, data[id].level, rank)]
-  });
-}
-
+client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
   if (!message.guild) return;
 
